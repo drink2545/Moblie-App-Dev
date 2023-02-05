@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,23 +8,18 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: Colors.blue,
+          fontFamily: 'Poppins',
+          textTheme: TextTheme(
+              bodyText2: TextStyle(
+            color: Colors.white,
+          )),
+          iconTheme: const IconThemeData(color: Colors.white)),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -31,85 +27,520 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+// Variable list
+List<String> style_list = ['Relax', 'Energize', 'Workout', 'Common', 'Focus'];
+List<String> playlist_header = [
+  'Mixed for you',
+  'From your library',
+  'From community'
+];
+int counter = 1;
+
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Colors.black,
+      // top bar
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        backgroundColor: Colors.black,
+        leading: Icon(
+          Icons.music_note,
+          size: 50,
+        ),
+        titleSpacing: 0,
+        title: Text(
+          'Music',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
+            child: Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  child: Icon(
+                    Icons.airplay_sharp,
+                    size: 25,
+                  ),
+                ),
+                Container(
+                  width: 50,
+                  height: 50,
+                  child: Icon(
+                    Icons.search,
+                    size: 30,
+                  ),
+                ),
+                Container(
+                  width: 50,
+                  height: 50,
+                  child: Container(
+                      width: 40,
+                      height: 40,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(shape: BoxShape.circle),
+                      child: Image.network(
+                        'https://picsum.photos/seed/263/600',
+                        fit: BoxFit.cover,
+                      )),
+                )
+              ],
+            ),
+          )
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      // app body
+      body: SafeArea(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              // style list
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: <Widget>[
+                    for (var style_name in style_list)
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                              primary: Color.fromARGB(255, 255, 255, 255),
+                              side: BorderSide(
+                                color: Color.fromARGB(62, 99, 92, 92),
+                              ),
+                              backgroundColor:
+                                  Color.fromARGB(20, 245, 245, 245),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)))),
+                          onPressed: () {
+                            debugPrint('$style_name');
+                          },
+                          child: Text('$style_name'),
+                        ),
+                      )
+                  ],
+                ),
+              ),
+              // Main content
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // name and two line playlist
+                          Container(
+                            child: Column(children: [
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        children: [
+                                          // picture
+                                          Container(
+                                            width: 40,
+                                            height: 40,
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Image.network(
+                                              'https://picsum.photos/seed/199/600',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    // name and topic
+                                    Expanded(
+                                        flex: 5,
+                                        child: Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: Column(
+                                              children: [
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    'Einzberz',
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: 24.0,
+                                                      color: Color.fromARGB(
+                                                          255, 162, 162, 162),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    'Listen again',
+                                                    style: TextStyle(
+                                                        fontSize: 30.0,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ],
+                                            ))),
+                                    // more button
+                                    Container(
+                                      width: 72,
+                                      height: 25,
+                                      child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            primary: Color.fromARGB(
+                                                255, 255, 255, 255),
+                                            side: BorderSide(
+                                              color: Color.fromARGB(
+                                                  62, 99, 92, 92),
+                                            ),
+                                            backgroundColor: Color.fromARGB(
+                                                20, 245, 245, 245),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(90)))),
+                                        onPressed: () {
+                                          debugPrint('more click');
+                                        },
+                                        child: Text('more'),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              // two line playlist
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: [
+                                    // for create multiple line
+                                    for (int i = 0; i < 2; i++)
+                                      Row(
+                                        // generate card
+                                        children: [
+                                          for (int x = 0; x < 10; x++)
+                                            // card
+                                            Padding(
+                                              padding: EdgeInsets.all(5),
+                                              child: Container(
+                                                child: Column(
+                                                  children: [
+                                                    ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5), // Image border
+                                                      child: SizedBox.fromSize(
+                                                        size: Size.fromRadius(
+                                                            48), // Image radius
+                                                        child: Image.network(
+                                                            'https://picsum.photos/seed/244/600',
+                                                            fit: BoxFit.cover),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                        padding:
+                                                            EdgeInsets.all(5),
+                                                        child: Container(
+                                                          width: 100,
+                                                          height: 30,
+                                                          child: Text(
+                                                            'Music name',
+                                                            maxLines: 2,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ))
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                        ],
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ]),
+                          ),
+                          // one line playlist
+                          for (var playlist_header_name in playlist_header)
+                            Container(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // name and topic
+                                        Text(
+                                          "$playlist_header_name",
+                                          style: TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        // more button
+                                        Container(
+                                          width: 72,
+                                          height: 25,
+                                          child: OutlinedButton(
+                                            style: OutlinedButton.styleFrom(
+                                                primary: Color.fromARGB(
+                                                    255, 255, 255, 255),
+                                                side: BorderSide(
+                                                  color: Color.fromARGB(
+                                                      62, 99, 92, 92),
+                                                ),
+                                                backgroundColor: Color.fromARGB(
+                                                    20, 245, 245, 245),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                90)))),
+                                            onPressed: () {
+                                              debugPrint('more click');
+                                            },
+                                            child: Text('more'),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          // generate card
+                                          children: [
+                                            for (int x = 0; x < 10; x++)
+                                              // card
+                                              Padding(
+                                                padding: EdgeInsets.all(5),
+                                                child: Container(
+                                                  child: Column(
+                                                    children: [
+                                                      ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                5), // Image border
+                                                        child:
+                                                            SizedBox.fromSize(
+                                                          size: Size.fromRadius(
+                                                              48), // Image radius
+                                                          child: Image.network(
+                                                              'https://picsum.photos/seed/244/600',
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          child: Container(
+                                                            width: 100,
+                                                            height: 30,
+                                                            child: Text(
+                                                              'Music name',
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                          ))
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          // top song
+                          Container(
+                            child: Column(children: [
+                              Container(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  // Topic and more button
+                                  children: [
+                                    // Topic
+                                    Text(
+                                      "Top songs",
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    // more button
+                                    Container(
+                                      width: 72,
+                                      height: 25,
+                                      child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            primary: Color.fromARGB(
+                                                255, 255, 255, 255),
+                                            side: BorderSide(
+                                              color: Color.fromARGB(
+                                                  62, 99, 92, 92),
+                                            ),
+                                            backgroundColor: Color.fromARGB(
+                                                20, 245, 245, 245),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(90)))),
+                                        onPressed: () {
+                                          debugPrint('more click');
+                                        },
+                                        child: Text('more'),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              // top songs content
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    for (int x = 1, counter = 1; x <= 3; x++)
+                                      Column(
+                                        children: [
+                                          for (int y = 0; y < 4; y++, counter++)
+                                            Padding(
+                                              padding: EdgeInsets.all(5),
+                                              child: Container(
+                                                width: 300,
+                                                height: 50,
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Image.network(
+                                                      'https://picsum.photos/seed/386/600',
+                                                      width: 55,
+                                                      height: 55,
+                                                    ),
+                                                    VerticalDivider(
+                                                      width: 10,
+                                                      thickness: 0,
+                                                      indent: 0,
+                                                      endIndent: 0,
+                                                    ),
+                                                    Text('$counter'),
+                                                    VerticalDivider(),
+                                                    Container(
+                                                      width: 180,
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            'Music name',
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                          Text(
+                                                            'Artist name',
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Icon(Icons.more_vert),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                        ],
+                                      )
+                                  ],
+                                ),
+                              )
+                            ]),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // bot nav bar
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.explore,
+            ),
+            label: 'Explore',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.library_music,
+            ),
+            label: 'LIbrary',
+          ),
+        ],
+      ),
     );
   }
 }
