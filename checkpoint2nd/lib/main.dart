@@ -41,6 +41,141 @@ class _MyHomePageState extends State<MyHomePage> {
     'From your library',
     'From community'
   ];
+  // music card widget
+  Widget card() {
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: GestureDetector(
+        onTap: () {
+          debugPrint('Card clik');
+        },
+        child: Container(
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(5), // Image border
+                child: SizedBox.fromSize(
+                  size: Size.fromRadius(48), // Image radius
+                  child: Image.network('https://picsum.photos/seed/244/600',
+                      fit: BoxFit.cover),
+                ),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(5),
+                  child: SizedBox(
+                    width: 100,
+                    height: 30,
+                    child: Text(
+                      'Music name',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // music banner for top songs
+  Widget small_music_banner(int counter) {
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: GestureDetector(
+        onTap: () => debugPrint('Banner click'),
+        child: Container(
+          width: 300,
+          height: 50,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.network(
+                'https://picsum.photos/seed/386/600',
+                width: 55,
+                height: 55,
+              ),
+              VerticalDivider(
+                width: 10,
+                thickness: 0,
+                indent: 0,
+                endIndent: 0,
+              ),
+              Text('$counter'),
+              VerticalDivider(),
+              SizedBox(
+                width: 180,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Music name',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      'Artist name',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () => debugPrint('3 dot click'),
+                child: Icon(Icons.more_vert),
+              )
+              
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // more button
+  Widget more_button() {
+    return Container(
+      width: 72,
+      height: 25,
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+            primary: Color.fromARGB(255, 255, 255, 255),
+            side: BorderSide(
+              color: Color.fromARGB(62, 99, 92, 92),
+            ),
+            backgroundColor: Color.fromARGB(20, 245, 245, 245),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(90)))),
+        onPressed: () {
+          debugPrint('more click');
+        },
+        child: Text('more'),
+      ),
+    );
+  }
+
+  // one line Track
+  Widget one_line_playTrack() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Column(
+        children: [
+          Row(
+            // generate card
+            children: [
+              for (int x = 0; x < 10; x++)
+                // card
+                card()
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,28 +336,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               ],
                                             ))),
                                     // more button
-                                    Container(
-                                      width: 72,
-                                      height: 25,
-                                      child: OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                            primary: Color.fromARGB(
-                                                255, 255, 255, 255),
-                                            side: BorderSide(
-                                              color: Color.fromARGB(
-                                                  62, 99, 92, 92),
-                                            ),
-                                            backgroundColor: Color.fromARGB(
-                                                20, 245, 245, 245),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(90)))),
-                                        onPressed: () {
-                                          debugPrint('more click');
-                                        },
-                                        child: Text('more'),
-                                      ),
-                                    )
+                                    more_button()
                                   ],
                                 ),
                               ),
@@ -234,46 +348,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     // for create multiple line
                                     for (int i = 0; i < 2; i++)
                                       Row(
-                                        // generate card
-                                        children: [
-                                          for (int x = 0; x < 10; x++)
-                                            // card
-                                            Padding(
-                                              padding: EdgeInsets.all(5),
-                                              child: Container(
-                                                child: Column(
-                                                  children: [
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5), // Image border
-                                                      child: SizedBox.fromSize(
-                                                        size: Size.fromRadius(
-                                                            48), // Image radius
-                                                        child: Image.network(
-                                                            'https://picsum.photos/seed/244/600',
-                                                            fit: BoxFit.cover),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                        padding:
-                                                            EdgeInsets.all(5),
-                                                        child: Container(
-                                                          width: 100,
-                                                          height: 30,
-                                                          child: Text(
-                                                            'Music name',
-                                                            maxLines: 2,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                          ),
-                                                        ))
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                        ],
+                                        // generate 10 card per row
+                                        children: [one_line_playTrack()],
                                       ),
                                   ],
                                 ),
@@ -299,84 +375,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         // more button
-                                        Container(
-                                          width: 72,
-                                          height: 25,
-                                          child: OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                                primary: Color.fromARGB(
-                                                    255, 255, 255, 255),
-                                                side: BorderSide(
-                                                  color: Color.fromARGB(
-                                                      62, 99, 92, 92),
-                                                ),
-                                                backgroundColor: Color.fromARGB(
-                                                    20, 245, 245, 245),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                90)))),
-                                            onPressed: () {
-                                              debugPrint('more click');
-                                            },
-                                            child: Text('more'),
-                                          ),
-                                        )
+                                        more_button()
                                       ],
                                     ),
                                   ),
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          // generate card
-                                          children: [
-                                            for (int x = 0; x < 10; x++)
-                                              // card
-                                              Padding(
-                                                padding: EdgeInsets.all(5),
-                                                child: Container(
-                                                  child: Column(
-                                                    children: [
-                                                      ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                5), // Image border
-                                                        child:
-                                                            SizedBox.fromSize(
-                                                          size: Size.fromRadius(
-                                                              48), // Image radius
-                                                          child: Image.network(
-                                                              'https://picsum.photos/seed/244/600',
-                                                              fit:
-                                                                  BoxFit.cover),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                          padding:
-                                                              EdgeInsets.all(5),
-                                                          child: Container(
-                                                            width: 100,
-                                                            height: 30,
-                                                            child: Text(
-                                                              'Music name',
-                                                              maxLines: 2,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                            ),
-                                                          ))
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  one_line_playTrack()
                                 ],
                               ),
                             ),
@@ -398,28 +401,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     // more button
-                                    Container(
-                                      width: 72,
-                                      height: 25,
-                                      child: OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                            primary: Color.fromARGB(
-                                                255, 255, 255, 255),
-                                            side: BorderSide(
-                                              color: Color.fromARGB(
-                                                  62, 99, 92, 92),
-                                            ),
-                                            backgroundColor: Color.fromARGB(
-                                                20, 245, 245, 245),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(90)))),
-                                        onPressed: () {
-                                          debugPrint('more click');
-                                        },
-                                        child: Text('more'),
-                                      ),
-                                    )
+                                    more_button()
                                   ],
                                 ),
                               ),
@@ -431,66 +413,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     for (int x = 1, counter = 1; x <= 3; x++)
                                       Column(
                                         children: [
+                                          // generate small music banner
                                           for (int y = 0; y < 4; y++, counter++)
-                                            Padding(
-                                              padding: EdgeInsets.all(5),
-                                              child: Container(
-                                                width: 300,
-                                                height: 50,
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Image.network(
-                                                      'https://picsum.photos/seed/386/600',
-                                                      width: 55,
-                                                      height: 55,
-                                                    ),
-                                                    VerticalDivider(
-                                                      width: 10,
-                                                      thickness: 0,
-                                                      indent: 0,
-                                                      endIndent: 0,
-                                                    ),
-                                                    Text('$counter'),
-                                                    VerticalDivider(),
-                                                    Container(
-                                                      width: 180,
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            'Music name',
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                          ),
-                                                          Text(
-                                                            'Artist name',
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Icon(Icons.more_vert),
-                                                  ],
-                                                ),
-                                              ),
-                                            )
+                                            small_music_banner(counter)
                                         ],
                                       )
                                   ],
