@@ -37,10 +37,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   List<String> style_list = ['Relax', 'Energize', 'Workout', 'Common', 'Focus'];
   List<String> playlist_header = [
-  'Mixed for you',
-  'From your library',
-  'From community'
-];
+    'Mixed for you',
+    'From your library',
+    'From community'
+  ];
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,18 +79,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 Container(
-                  width: 50,
-                  height: 50,
-                  child: Container(
-                      width: 40,
-                      height: 40,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(shape: BoxShape.circle),
-                      child: Image.network(
-                        'https://picsum.photos/seed/263/600',
-                        fit: BoxFit.cover,
-                      )),
-                )
+                    width: 30,
+                    height: 30,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: Image.network(
+                      'https://picsum.photos/seed/263/600',
+                      fit: BoxFit.cover,
+                    ))
               ],
             ),
           )
