@@ -33,17 +33,15 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-// Variable list
-List<String> style_list = ['Relax', 'Energize', 'Workout', 'Common', 'Focus'];
-List<String> playlist_header = [
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  List<String> style_list = ['Relax', 'Energize', 'Workout', 'Common', 'Focus'];
+  List<String> playlist_header = [
   'Mixed for you',
   'From your library',
   'From community'
 ];
-int counter = 1;
 
-class _MyHomePageState extends State<MyHomePage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
