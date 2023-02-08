@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+// group member
+// 1. Niti Kostuao 63070197
+// 2. Pongsathon Tangkanakol 63070201
+// 3. Pascal
+// 4. Snoopy
+
 void main() {
   runApp(const MyApp());
 }
