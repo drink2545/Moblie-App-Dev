@@ -61,7 +61,7 @@ class _FormPageState extends State<FormPage> {
       selectedGender = value;
     });
   }
-
+// generate checkbox
   Widget symtopmsCheckbox(
     String key,
     String title,
@@ -75,7 +75,7 @@ class _FormPageState extends State<FormPage> {
       onChanged: onChanged,
     );
   }
-
+// check the symtom (checkmark)
   void _onCheckboxChange(bool? value, String option, int options) {
     if (value == null) return;
     setState(() {
@@ -190,6 +190,7 @@ class _FormPageState extends State<FormPage> {
                 Text('อาการ'),
                 Column(
                   children: [
+                    // generate checkbox
                     for (var i = 0; i < _isOptions.length; i++)
                       symtopmsCheckbox(
                           'syntom-$i-tag',
@@ -202,6 +203,7 @@ class _FormPageState extends State<FormPage> {
                 ElevatedButton(
                   key: Key('save-button-tag'),
                   onPressed: () {
+                    // reset input
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       gender = selectedGender;
@@ -213,6 +215,7 @@ class _FormPageState extends State<FormPage> {
                       for (var i = 0; i < _isOptions.length; i++) {
                         _isOptions[i] = false;
                       }
+                      // go to result page
                       Navigator.push(
                         context,
                         MaterialPageRoute(
