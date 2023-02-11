@@ -37,12 +37,14 @@ class _FormPageState extends State<FormPage> {
   final TextEditingController _conLast = TextEditingController();
   final TextEditingController _conNick = TextEditingController();
   final TextEditingController _conAge = TextEditingController();
+  final TextEditingController _conDay = TextEditingController();
 
   String? firstname;
   String? lastname;
   String? nickname;
   String? gender;
   int? age;
+  int? day;
 
   String? selectedGender;
 
@@ -167,6 +169,17 @@ class _FormPageState extends State<FormPage> {
                     age = int.parse(value!);
                   }),
                 ),
+                TextFormField(
+                  key: Key("days-tag"),
+                  decoration: InputDecoration(
+                    labelText: 'จำนวนวันที่มีอาการ',
+                  ),
+                  controller: _conDay,
+                  keyboardType: TextInputType.number,
+                  onSaved: (String? value) => setState(() {
+                    day = int.parse(value!);
+                  }),
+                ),
                 Text('เพศ'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -174,14 +187,21 @@ class _FormPageState extends State<FormPage> {
                     Text('ชาย'),
                     Radio(
                       key: Key('male-tag'),
-                      value: 'Male',
+                      value: 'ชาย/Male',
                       groupValue: selectedGender,
                       onChanged: (String? value) => _onRadioButtonChange(value),
                     ),
                     Text('หญิง'),
                     Radio(
                       key: Key('female-tag'),
-                      value: 'Female',
+                      value: 'หญิง/Female',
+                      groupValue: selectedGender,
+                      onChanged: (String? value) => _onRadioButtonChange(value),
+                    ),
+                    Text('ไม่ระบุ'),
+                    Radio(
+                      key: Key('none-tag'),
+                      value: 'ไม่ระบุ/None',
                       groupValue: selectedGender,
                       onChanged: (String? value) => _onRadioButtonChange(value),
                     ),
@@ -212,6 +232,7 @@ class _FormPageState extends State<FormPage> {
                       _conLast.clear();
                       _conNick.clear();
                       _conAge.clear();
+                      _conDay.clear();
                       for (var i = 0; i < _isOptions.length; i++) {
                         _isOptions[i] = false;
                       }
@@ -225,6 +246,7 @@ class _FormPageState extends State<FormPage> {
                             nickname: nickname,
                             gender: gender,
                             age: age,
+                            day: day,
                             symtopms: selectedOptions,
                           ),
                         ),
@@ -248,6 +270,7 @@ class ReportPage extends StatelessWidget {
   final String? nickname;
   final String? gender;
   final int? age;
+  final int? day;
   final List<String>? symtopms;
 
   ReportPage({
@@ -257,6 +280,7 @@ class ReportPage extends StatelessWidget {
     this.gender,
     this.symtopms,
     this.age,
+    this.day,
   });
 
   @override
@@ -304,6 +328,11 @@ class ReportPage extends StatelessWidget {
             Text(
               'อายุ $age',
               key: Key('report-age-tag'),
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              'เพศ $gender',
+              key: Key('report-gender-tag'),
               textAlign: TextAlign.center,
             ),
             Text(
