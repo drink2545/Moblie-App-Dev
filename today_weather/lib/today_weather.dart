@@ -48,6 +48,43 @@ class TodayWeatherState extends State<TodayWeather> {
     );
   }
 
+  Widget weather_data_widget() {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: weatherData != null
+                ? Weather(weather: weatherData!)
+                : SizedBox.shrink(), // Empty container
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget forecast_data_widget() {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: 200.0,
+          child: forecastData != null
+              ? ListView.builder(
+                  itemCount: forecastData!.list.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => WeatherItem(
+                    weather: forecastData!.list.elementAt(index),
+                    color: Colors.white,
+                  ),
+                )
+              : SizedBox.shrink(),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -63,37 +100,41 @@ class TodayWeatherState extends State<TodayWeather> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               // TODO: Refactor this section into widgets
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: weatherData != null ? Weather(weather: weatherData!) : SizedBox.shrink(), // Empty container
-                    ),
-                  ],
-                ),
-              ),
+              weather_data_widget(),
+              // Expanded(
+              //   child: Column(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: <Widget>[
+              //       Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: weatherData != null
+              //             ? Weather(weather: weatherData!)
+              //             : SizedBox.shrink(), // Empty container
+              //       ),
+              //     ],
+              //   ),
+              // ),
               _refreshButton(),
               // TODO: Refactor this section into widgets
-              SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 200.0,
-                    child: forecastData != null
-                        ? ListView.builder(
-                            itemCount: forecastData!.list.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) => WeatherItem(
-                              weather: forecastData!.list.elementAt(index),
-                              color: Colors.white,
-                            ),
-                          )
-                        : SizedBox.shrink(),
-                  ),
-                ),
-              )
+              forecast_data_widget(),
+              // SafeArea(
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: Container(
+              //       height: 200.0,
+              //       child: forecastData != null
+              //           ? ListView.builder(
+              //               itemCount: forecastData!.list.length,
+              //               scrollDirection: Axis.horizontal,
+              //               itemBuilder: (context, index) => WeatherItem(
+              //                 weather: forecastData!.list.elementAt(index),
+              //                 color: Colors.white,
+              //               ),
+              //             )
+              //           : SizedBox.shrink(),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),
@@ -103,7 +144,7 @@ class TodayWeatherState extends State<TodayWeather> {
 
   loadWeather() async {
     String apiKey = dotenv.env["API_KEY"]!;
-    print('1');
+    print('1 loadWeather');
     setState(() {
       isLoading = true;
     });
@@ -133,27 +174,30 @@ class TodayWeatherState extends State<TodayWeather> {
       if (e.code == 'PERMISSION_DENIED') {
         error = 'Permission denied';
       } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
-        error = 'Permission denied - please ask the user to enable it from the app settings';
+        error =
+            'Permission denied - please ask the user to enable it from the app settings';
       }
 
       _locationData = null;
     }
 
-    print(_locationData);
+    print('location: $_locationData');
 
     if (_locationData != null) {
       final lat = _locationData!.latitude;
       final lon = _locationData!.longitude;
       // TODO: add Await to each function here to get the number print in the order
-      WeatherData? _weatherData = await _fetchAndSetWeatherData(apiKey, lat!, lon!);
-      ForecastData? _forecastData = await _fetchAndSetForcastingData(apiKey, lat, lon);
+      WeatherData? _weatherData =
+          await _fetchAndSetWeatherData(apiKey, lat!, lon!);
+      ForecastData? _forecastData =
+          await _fetchAndSetForcastingData(apiKey, lat, lon);
 
       setState(() {
         weatherData = _weatherData;
         forecastData = _forecastData;
       });
     }
-    print('4');
+    print('4 stop loading');
     setState(() {
       isLoading = false;
     });
@@ -164,7 +208,7 @@ class TodayWeatherState extends State<TodayWeather> {
     double lat,
     double lon,
   ) async {
-    print('2');
+    print('2 future fetch weather data');
     final weatherResponse = await dio.get(
       'https://api.openweathermap.org/data/2.5/weather?appid=$apiKey&lat=${lat.toString()}&lon=${lon.toString()}',
     );
@@ -172,7 +216,7 @@ class TodayWeatherState extends State<TodayWeather> {
     if (weatherResponse.statusCode == 200) {
       return WeatherData.fromJson(weatherResponse.data);
       // setState(() {
-      //   weatherData = 
+      //   weatherData =
       // });
     } else {
       print(weatherResponse.statusCode);
@@ -185,12 +229,12 @@ class TodayWeatherState extends State<TodayWeather> {
     double lat,
     double lon,
   ) async {
-    print('3');
+    print('3 calling api for forecase response');
     final forecastResponse = await dio.get(
       'https://api.openweathermap.org/data/2.5/forecast?appid=$apiKey&lat=${lat.toString()}&lon=${lon.toString()}',
     );
     if (forecastResponse.statusCode == 200) {
-      return  ForecastData.fromJson(forecastResponse.data);
+      return ForecastData.fromJson(forecastResponse.data);
     } else {
       print(forecastResponse.statusCode);
       return null;
