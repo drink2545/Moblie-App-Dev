@@ -46,38 +46,46 @@ class _FormPageState extends State<FormPage> {
 
   String? selectedGender;
 
-  bool _isOption1 = false;
-  bool _isOption2 = false;
-  bool _isOption3 = false;
-  bool _isOption4 = false;
-  bool _isOption5 = false;
+  final List<bool> _isOptions = [false, false, false, false, false];
 
   List<String> selectedOptions = [];
-
+  List<String> symtopms_list = [
+    'ไอ',
+    'เจ็บคอ',
+    'ไข้',
+    'เสมหะ',
+    'ใกล้ชิดผู้ติดเชื้อ'
+  ];
   void _onRadioButtonChange(String? value) {
     setState(() {
       selectedGender = value;
     });
   }
 
-  Widget CheckBox(id, symptom, options) {
+  Widget symtopmsCheckbox(
+    String key,
+    String title,
+    bool options,
+    void Function(bool?) onChanged,
+  ) {
     return CheckboxListTile(
-      key: Key('syntom-$id-tag'),
-      title: Text(symptom),
+      key: Key(key),
+      title: Text(title),
       value: options,
-      onChanged: (bool? val) {
-        setState(() {
-          options = !options;
-          if (options) {
-            debugPrint('in $id');
-            selectedOptions.add(symptom);
-          } else {
-            debugPrint('out $id');
-            selectedOptions.remove(symptom);
-          }
-        });
-      },
+      onChanged: onChanged,
     );
+  }
+
+  void _onCheckboxChange(bool? value, String option, int options) {
+    if (value == null) return;
+    setState(() {
+      _isOptions[options] = value;
+      if (_isOptions[options]) {
+        selectedOptions.add(option);
+      } else {
+        selectedOptions.remove(option);
+      }
+    });
   }
 
   @override
@@ -182,67 +190,13 @@ class _FormPageState extends State<FormPage> {
                 Text('อาการ'),
                 Column(
                   children: [
-                    CheckboxListTile(
-                      key: Key('syntom-one-tag'),
-                      title: Text('ไอ'),
-                      value: _isOption1,
-                      onChanged: (bool? val) {
-                        setState(() {
-                          _isOption1 = !_isOption1;
-                          if (_isOption1) {
-                            selectedOptions.add('ไอ');
-                          } else {
-                            selectedOptions.remove('ไอ');
-                          }
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      key: Key('syntom-two-tag'),
-                      title: Text('เจ็บคอ'),
-                      value: _isOption2,
-                      onChanged: (bool? val) {
-                        setState(() {
-                          _isOption2 = !_isOption2;
-                          if (_isOption2) {
-                            selectedOptions.add('เจ็บคอ');
-                          } else {
-                            selectedOptions.remove('เจ็บคอ');
-                          }
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      key: Key('syntom-three-tag'),
-                      title: Text('ไข้'),
-                      value: _isOption3,
-                      onChanged: (bool? val) {
-                        setState(() {
-                          _isOption3 = !_isOption3;
-                          if (_isOption3) {
-                            selectedOptions.add('มีไข้');
-                          } else {
-                            selectedOptions.remove('มีไข้');
-                          }
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      key: Key('syntom-four-tag'),
-                      title: Text('เสมหะ'),
-                      value: _isOption4,
-                      onChanged: (bool? val) {
-                        setState(() {
-                          _isOption4 = !_isOption4;
-                          if (_isOption4) {
-                            selectedOptions.add('เสมหะ');
-                          } else {
-                            selectedOptions.remove('เสมหะ');
-                          }
-                        });
-                      },
-                    ),
-                    CheckBox(5, 'ใกล้ชิดผู้ติดเชื้อ', _isOption5),
+                    for (var i = 0; i < _isOptions.length; i++)
+                      symtopmsCheckbox(
+                          'syntom-$i-tag',
+                          symtopms_list[i],
+                          _isOptions[i],
+                          (bool? value) =>
+                              _onCheckboxChange(value, symtopms_list[i], i))
                   ],
                 ),
                 ElevatedButton(
@@ -256,11 +210,9 @@ class _FormPageState extends State<FormPage> {
                       _conLast.clear();
                       _conNick.clear();
                       _conAge.clear();
-                      _isOption1 = false;
-                      _isOption2 = false;
-                      _isOption3 = false;
-                      _isOption4 = false;
-                      _isOption5 = false;
+                      for (var i = 0; i < _isOptions.length; i++) {
+                        _isOptions[i] = false;
+                      }
                       Navigator.push(
                         context,
                         MaterialPageRoute(
