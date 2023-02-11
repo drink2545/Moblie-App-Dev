@@ -50,6 +50,7 @@ class _FormPageState extends State<FormPage> {
   bool _isOption2 = false;
   bool _isOption3 = false;
   bool _isOption4 = false;
+  bool _isOption5 = false;
 
   List<String> selectedOptions = [];
 
@@ -57,6 +58,26 @@ class _FormPageState extends State<FormPage> {
     setState(() {
       selectedGender = value;
     });
+  }
+
+  Widget CheckBox(id, symptom, options) {
+    return CheckboxListTile(
+      key: Key('syntom-$id-tag'),
+      title: Text(symptom),
+      value: options,
+      onChanged: (bool? val) {
+        setState(() {
+          options = !options;
+          if (options) {
+            debugPrint('in $id');
+            selectedOptions.add(symptom);
+          } else {
+            debugPrint('out $id');
+            selectedOptions.remove(symptom);
+          }
+        });
+      },
+    );
   }
 
   @override
@@ -127,17 +148,17 @@ class _FormPageState extends State<FormPage> {
                     nickname = value;
                   }),
                 ),
-                // TextFormField(
-                //   key: Key("age-tag"),
-                //   decoration: InputDecoration(
-                //     labelText: 'อายุ',
-                //   ),
-                //   controller: _conAge,
-                //   keyboardType: TextInputType.number,
-                //   onSaved: (String? value) => setState(() {
-                //     age = int.parse(value!);
-                //   }),
-                // ),
+                TextFormField(
+                  key: Key("age-tag"),
+                  decoration: InputDecoration(
+                    labelText: 'อายุ',
+                  ),
+                  controller: _conAge,
+                  keyboardType: TextInputType.number,
+                  onSaved: (String? value) => setState(() {
+                    age = int.parse(value!);
+                  }),
+                ),
                 Text('เพศ'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -221,6 +242,7 @@ class _FormPageState extends State<FormPage> {
                         });
                       },
                     ),
+                    CheckBox(5, 'ใกล้ชิดผู้ติดเชื้อ', _isOption5),
                   ],
                 ),
                 ElevatedButton(
@@ -238,14 +260,16 @@ class _FormPageState extends State<FormPage> {
                       _isOption2 = false;
                       _isOption3 = false;
                       _isOption4 = false;
+                      _isOption5 = false;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => ReportPage(
                             firstname: firstname,
-                            lastname:  lastname,
+                            lastname: lastname,
                             nickname: nickname,
                             gender: gender,
+                            age: age,
                             symtopms: selectedOptions,
                           ),
                         ),
